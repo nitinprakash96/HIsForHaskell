@@ -18,18 +18,18 @@ jobs:
           ghc-version: 9.6.5
           cabal-version: 3.10.1.0
 
+      - uses: actions/cache@v4
+        name: Cache ~/.cabal/store
+        with:
+          path: ${{ steps.setup-haskell-cabal.outputs.cabal-store }}
+          key: ${{ runner.os }}-${{ hashFiles('cabal.project.freeze') }}
+
       - name: update cabal index
         run: |
           cabal v2-update -v
 
       - name: Freeze
         run: cabal freeze
-
-      - uses: actions/cache@v4
-        name: Cache ~/.cabal/store
-        with:
-          path: ${{ steps.setup-haskell-cabal.outputs.cabal-store }}
-          key: ${{ runner.os }}-${{ hashFiles('cabal.project.freeze') }}
 
       - name: Build binary
         run: |
@@ -58,12 +58,9 @@ jobs:
       - name: Check out
         uses: actions/checkout@v4
 
-      - name: Set tag name
-        uses: little-core-labs/get-git-tag@v3.0.2
-        id: tagName
-        with:
-          tagRegex: "v(.*)"
-          tagRegexGroup: 1
+      - name: Generate tag
+        run: |
+          echo ::set-env name=RELEASE_TAG::"$(TZ=UTC-8 date +"%Y.%m.%d")"
 
       - name: Download binary for Macos x86_64
         uses: actions/download-artifact@v4
@@ -74,6 +71,6 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.tagName.outputs.tag }}
+          tag_name: ${{ env.RELEASE_TAG }}
           files: |
             hello
