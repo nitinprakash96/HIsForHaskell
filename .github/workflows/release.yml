@@ -15,7 +15,7 @@ jobs:
         uses: little-core-labs/get-git-tag@v3.0.2
         id: tag
         with:
-          tagRegex: "v0.1"
+          tagRegex: "v(.*)"
           tagRegexGroup: 1
 
       - uses: haskell-actions/setup@v2
