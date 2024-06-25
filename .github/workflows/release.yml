@@ -6,7 +6,7 @@ on:
 jobs:
   build-binary:
     name: haskell-release-macos
-    runs-on: macos-latest
+    runs-on: macos-13 # because I have intel based mac. -latest would mean arm CPUs
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -70,9 +70,7 @@ jobs:
 
       - name: Rename
         run: |
-          ls -al
           mv artifacts/hello/hello hello
-          ls -al
 
       - name: Release
         uses: softprops/action-gh-release@v2
