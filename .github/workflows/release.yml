@@ -71,7 +71,7 @@ jobs:
       - name: Rename
         run: |
           ls -al
-          mv artifacts/hello hello
+          mv artifacts/hello/hello hello
           ls -al
 
       - name: Release
