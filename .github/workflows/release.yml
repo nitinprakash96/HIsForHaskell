@@ -70,7 +70,9 @@ jobs:
 
       - name: Rename
         run: |
+          ls -al
           mv artifacts/hello hello
+          ls -al
 
       - name: Release
         uses: softprops/action-gh-release@v2
