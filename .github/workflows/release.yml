@@ -8,19 +8,26 @@ jobs:
     name: haskell-release-macos
     runs-on: macos-latest
     steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set tag name
+        uses: little-core-labs/get-git-tag@v3.0.2
+        id: tag
+        with:
+          tagRegex: "v0.1"
+          tagRegexGroup: 1
+
       - uses: haskell-actions/setup@v2
         id: setup-haskell-cabal
         name: Setup Haskell
         with:
-          ghc-version: 9.8.2
+          ghc-version: 9.6.5
           cabal-version: 3.10.1.0
 
       - name: update cabal index
         run: |
           cabal v2-update -v
-
-      - name: Check out code
-        uses: actions/checkout@v4
 
       - name: Build binary
         run: |
@@ -49,13 +56,15 @@ jobs:
       - name: Check out
         uses: actions/checkout@v4
 
-      - name: Download Macos x86
+      - name: Download binary for Macos x86_64
         uses: actions/download-artifact@v4
         with:
           name: hello
-          path: artifacts/hadolint-Darwin-x86_64
+          path: artifacts/hello
 
       - name: Release
         uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
         with:
-        files: hello
+          files: |
+            hello
