@@ -68,6 +68,10 @@ jobs:
           name: hello
           path: artifacts/hello
 
+      - name: Rename
+        run: |
+          mv artifacts/hello hello-macos-x86_64
+
       - name: Release
         uses: softprops/action-gh-release@v2
         env:
@@ -75,4 +79,4 @@ jobs:
         with:
           tag_name: ${{ env.RELEASE_TAG }}
           files: |
-            hello
+            hello-macos-x86_64
