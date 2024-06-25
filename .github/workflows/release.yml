@@ -68,8 +68,14 @@ jobs:
           name: hello
           path: artifacts/hello
 
+      - name: Rename
+        run: |
+          mv artifacts/hello hello
+
       - name: Release
         uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ env.RELEASE_TAG }}
           files: |
