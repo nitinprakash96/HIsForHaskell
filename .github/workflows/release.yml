@@ -11,13 +11,6 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Set tag name
-        uses: little-core-labs/get-git-tag@v3.0.2
-        id: tag
-        with:
-          tagRegex: "v(.*)"
-          tagRegexGroup: 1
-
       - uses: haskell-actions/setup@v2
         id: setup-haskell-cabal
         name: Setup Haskell
@@ -65,6 +58,13 @@ jobs:
       - name: Check out
         uses: actions/checkout@v4
 
+      - name: Set tag name
+        uses: little-core-labs/get-git-tag@v3.0.2
+        id: tagName
+        with:
+          tagRegex: "v(.*)"
+          tagRegexGroup: 1
+
       - name: Download binary for Macos x86_64
         uses: actions/download-artifact@v4
         with:
@@ -74,5 +74,6 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ steps.tagName.outputs.tag }}
           files: |
             hello
