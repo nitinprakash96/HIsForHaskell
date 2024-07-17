@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest]
+        os: [windows-latest, ubuntu-latest]
         cabal: ["3.12.1.0"]
         ghc: ["9.8.2"]
     timeout-minutes:
